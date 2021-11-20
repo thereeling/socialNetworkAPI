@@ -5,6 +5,7 @@ const { findOneAndDelete } = require('../models/User');
 const userController = {
     getAllUsers(req, res) {
         User.find({})
+        .select('-__v')
         .then(dbUserData => res.json(dbUserData))
         .catch(err => {
           console.log(err);
@@ -47,7 +48,7 @@ const userController = {
           })
           .catch(err => res.json(err));
     },
-    
+
 // Check the method to delete associated thoughts!!
 
     deleteUser( { params }, res) {
@@ -59,8 +60,8 @@ const userController = {
 
     addFriend({ params }, res) {
         User.findOneAndUpdate(
-            { _id: req.params.userId},
-            { $push: {friends: req.params.friendId}},
+            { _id: params.userId},
+            { $push: {friends: params.friendId}},
             {runValidators: true, new: true}
         )
         .then(dbUserData => {
@@ -75,8 +76,8 @@ const userController = {
 
     deleteFriend({ params }, res) {
         User.findOneAndDelete(
-            { _id: req.params.userId},
-            { $pull: {friends: req.params.friendId}},
+            { _id: params.userId},
+            { $pull: {friends: params.friendId}},
             {runValidators: true, new: true}
         )
         .then(dbUserData => {
