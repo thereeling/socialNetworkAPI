@@ -48,11 +48,8 @@ const userController = {
           .catch(err => res.json(err));
     },
 
-// Check the method to delete associated thoughts!!
-
     deleteUser( { params }, res) {
         User.findOneAndDelete({ _id: params.id })
-        .then(Thoughts.findByIdAndDelete({ _id: params.id }))
         .then(dbUserData => res.json(dbUserData))
         .catch(err => res.json(err));
     },
